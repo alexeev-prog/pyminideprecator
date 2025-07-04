@@ -1,3 +1,9 @@
+commit 1fb815132d2171721b2c2fa1b86043b91801bc55
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 06:45:44 2025 +0700
+
+    update docs, add noxfile, update workflow
+
 commit af5c0619b6a36003ec262549ccefb2e6d385273e
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Jul 5 06:41:04 2025 +0700
