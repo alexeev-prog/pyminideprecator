@@ -1,3 +1,21 @@
+commit 46e43693f4b2b09717c00d23db1fc991c27d4164
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 06:37:58 2025 +0700
+
+    Create python-package.yml
+
+commit aff7aeb23b60456d2285523d5a00a92987c84007
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 06:37:31 2025 +0700
+
+    remove deprecated workflow
+
+commit c4db00ebaa68790fcabe4ef9bf0457425472565f
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 06:36:45 2025 +0700
+
+    improve docs
+
 commit 76098b357fcb0fc1b0c3933f7ea8df638cb90c5b
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Jul 5 06:29:48 2025 +0700
