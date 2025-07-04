@@ -12,11 +12,7 @@ pyminideprecator documentation
    :maxdepth: 2
    :caption: Source code docs:
 
-   pyminideprecator
-   pyminideprecator.config
-   pyminideprecator.deprecator
-   pyminideprecator.exc
-   pyminideprecator.version
+   modules
 
 ------------------
 
