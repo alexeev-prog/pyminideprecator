@@ -2,7 +2,7 @@ import nox
 
 
 @nox.session
-def tests(session):
+def test(session):
     session.install('pytest')
     session.run('pytest tests/')
 
@@ -11,3 +11,4 @@ def tests(session):
 def lint(session):
     session.install('ruff')
     session.run('ruff', 'check', 'src/pyminideprecator/')
+
