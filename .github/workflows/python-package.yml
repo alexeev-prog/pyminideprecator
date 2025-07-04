@@ -27,11 +27,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install ruff pytest
+        python -m pip install Nox
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with ruff
+    - name: Lint
       run: |
-        ruff check src/pyminideprecator/
-    - name: Test with pytest
+        nox --session lint
+    - name: Test
       run: |
-        pytest tests/
+        nox --session test

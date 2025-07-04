@@ -26,7 +26,7 @@
     <img src="https://img.shields.io/github/issues/alexeev-prog/pyminideprecator?style=for-the-badge">
     <img src="https://img.shields.io/github/last-commit/alexeev-prog/pyminideprecator?style=for-the-badge">
     <img src="https://img.shields.io/pypi/wheel/pyminideprecator?style=for-the-badge">
-    <img src="https://img.shields.io/badge/coverage-73%25-73%25?style=for-the-badge" alt="Coverage">
+    <img src="https://img.shields.io/badge/coverage-100%25-100%25?style=for-the-badge" alt="Coverage">
     <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/pyminideprecator?style=for-the-badge">
     <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/pyminideprecator?style=for-the-badge">
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyminideprecator?style=for-the-badge">
