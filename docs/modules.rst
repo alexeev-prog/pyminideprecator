@@ -1,7 +1,7 @@
-src
-===
+Modules
+===============
 
-.. toctree::
-   :maxdepth: 4
-
-   pyminideprecator
+.. automodule:: pyminideprecator
+   :members:
+   :undoc-members:
+   :show-inheritance:

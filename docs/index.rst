@@ -13,6 +13,7 @@ pyminideprecator documentation
    :caption: Source code docs:
 
    modules
+   pyminideprecator
 
 ------------------
 
