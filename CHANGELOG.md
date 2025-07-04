@@ -1,3 +1,9 @@
+commit e232fac7f0946eaa0652d8240ee9b2e4297434ca
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 06:47:23 2025 +0700
+
+    fix workflow
+
 commit 1fb815132d2171721b2c2fa1b86043b91801bc55
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Jul 5 06:45:44 2025 +0700
