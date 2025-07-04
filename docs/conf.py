@@ -4,8 +4,10 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
-sys.path.insert(0, os.path.abspath("../pyminideprecator"))
-sys.path.insert(0, os.path.abspath("pyminideprecator"))
+sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("src"))
+sys.path.insert(0, os.path.abspath("../src/pyminideprecator"))
+sys.path.insert(0, os.path.abspath("src/pyminideprecator"))
 
 project = "pyminideprecator"
 author = "name"
