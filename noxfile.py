@@ -5,7 +5,7 @@ python_versions = ["3.10", "3.11", "3.12", "3.13"]
 
 
 @nox.session(python=python_versions, venv_backend='uv')
-def tests(session):
+def test(session):
     """Run tests on specified Python versions."""
     # Install the package and test dependencies with uv
     session.run_always("uv", "pip", "install", ".", external=True)
