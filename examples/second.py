@@ -1,10 +1,10 @@
 from pyminideprecator import deprecate, set_current_version
 
-set_current_version("0.5.0")
+set_current_version("0.1.0")
 
 
 @deprecate(
-    remove_version="2024.01.01",
+    remove_version="1.1.1",
     message="Old database client",
     instead="NewDBClient",
     category=FutureWarning,
@@ -17,5 +17,5 @@ class OldDBClient:
         return ["result1", "result2"]
 
 
-client = OldDBClient("db://localhost")  # Выдает FutureWarning
+client = OldDBClient("db://localhost")
 print(client.query("SELECT * FROM table"))
