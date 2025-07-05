@@ -80,7 +80,7 @@ Class Deprecation
 .. code-block:: python
 
     @deprecate(
-        remove_version="2024.01.01",
+        remove_version="2026.01.01",
         message="Old database client",
         instead="NewDBClient"
     )
@@ -110,7 +110,7 @@ pyminideprecator supports two version formats:
 
 2. **Date-based Versions**:
    - Format: ``YYYY.MM.DD``
-   - Example: ``2023.12.31``, ``2024.01.01``
+   - Example: ``2025.12.31``, ``2026.01.01``
    - Comparison: Chronological ordering
 
 Lifecycle Management
@@ -332,7 +332,7 @@ for details.
 Changelog
 ------------
 
-v0.1.0 (2023-10-15)
+v0.1.0 (2025-05-07)
 ^^^^^^^^^^^^^^^^^^^^
 - Initial release
 - Core deprecation functionality

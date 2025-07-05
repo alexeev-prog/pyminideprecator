@@ -1,3 +1,15 @@
+commit 95fe6982d9735c2331113023cc0a670cdadced57
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 07:16:10 2025 +0700
+
+    add new example
+
+commit 84ec074317b5d9c3ad55da678c189930899305b2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 07:13:14 2025 +0700
+
+    fix docs
+
 commit a8dc4d32f5714c1cf2b0846e7005593658073ede
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Jul 5 07:09:39 2025 +0700

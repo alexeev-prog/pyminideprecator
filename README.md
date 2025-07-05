@@ -43,7 +43,7 @@
 ## Features
 
 - **Minimal API**: Single decorator for all deprecation needs
-- **Version-aware**: Supports semantic (1.2.3) and date-based (2023.12.31) versions
+- **Version-aware**: Supports semantic (1.2.3) and date-based (2025.12.31) versions
 - **Automatic escalation**: Warnings become errors at specified versions
 - **Class support**: Decorates classes and all their methods
 - **Documentation integration**: Auto-updates docstrings with deprecation notices
@@ -112,7 +112,7 @@ pyminideprecator supports two version formats:
 
 2. **Date-based Versions**:
    - Format: `YYYY.MM.DD`
-   - Example: `2023.12.31`, `2024.01.01`
+   - Example: `2025.12.31`, `2026.01.01`
    - Comparison: Chronological ordering
 
 Set your application version before using deprecated functionality:
@@ -124,7 +124,7 @@ from pyminideprecator import set_current_version, Version
 set_current_version("1.2.3")
 
 # Set as Version object
-set_current_version(Version("2023.12.31"))
+set_current_version(Version("2025.12.31"))
 
 # Auto-detect from package metadata
 set_current_version(source="your_package_name")
