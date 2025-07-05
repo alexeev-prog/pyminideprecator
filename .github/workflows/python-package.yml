@@ -35,6 +35,3 @@ jobs:
     - name: Test
       run: |
         nox --session test
-    - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@v2.3.6
-

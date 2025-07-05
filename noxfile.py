@@ -20,6 +20,7 @@ def test(session):
     session.run(
         "pytest",
         "tests/",
+        "--cov-fail-under=100", # 100% coverage
         "-v",                   # verbose output
         "-s",                   # don't capture output
         "--tb=short",           # shorter traceback format
