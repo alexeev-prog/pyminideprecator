@@ -32,7 +32,6 @@
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyminideprecator?style=for-the-badge">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/alexeev-prog/pyminideprecator?style=for-the-badge">
 </p>
-
 <p align="center">
     <img src="https://raw.githubusercontent.com/alexeev-prog/pyminideprecator/refs/heads/main/docs/pallet-0.png">
 </p>
