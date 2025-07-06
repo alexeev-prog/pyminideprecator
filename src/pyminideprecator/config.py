@@ -1,17 +1,20 @@
+"""
+Add a support for configuration of pyminideprecator
+"""
 from contextlib import contextmanager
 from contextvars import ContextVar
-from typing import Optional, Union
 
-from .version import Version
+from pyminideprecator.version import Version
 
 # Context-local storage for current version
-_CURRENT_VERSION: ContextVar[Optional[Version]] = ContextVar(
+_CURRENT_VERSION: ContextVar[Version | None] = ContextVar(
     "_CURRENT_VERSION", default=None
 )
 
 
-def set_current_version(version: Union[str, Version, None]) -> None:
-    """Sets the current application version in the current context.
+def set_current_version(version: str | Version | None) -> None:
+    """
+    Sets the current application version in the current context.
 
     This version is context-aware and thread-safe. It can be:
     - String representation (e.g., "1.2.3" or "2023.12.31")
@@ -24,6 +27,7 @@ def set_current_version(version: Union[str, Version, None]) -> None:
     Raises:
         ValueError: If string version has invalid format
         TypeError: If invalid version type is provided
+
     """
     if version is None:
         _CURRENT_VERSION.set(None)
@@ -35,21 +39,25 @@ def set_current_version(version: Union[str, Version, None]) -> None:
         _CURRENT_VERSION.set(version)
 
 
-def get_current_version() -> Optional[Version]:
-    """Retrieves the current application version for the context.
+def get_current_version() -> Version | None:
+    """
+    Retrieves the current application version for the context.
 
     Returns:
         The current Version object if set, otherwise None.
+
     """
     return _CURRENT_VERSION.get()
 
 
 @contextmanager
 def scoped_version(version: str):
-    """Context manager for creating scoped version.
+    """
+    Context manager for creating scoped version.
 
     Args:
         version: The scoped version
+
     """
     original = get_current_version()
     set_current_version(version)

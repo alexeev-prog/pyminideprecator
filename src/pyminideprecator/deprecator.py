@@ -1,3 +1,6 @@
+"""
+Main deprecator module.
+"""
 import inspect
 import warnings
 from functools import wraps
@@ -47,7 +50,6 @@ def _generate_message(
 
 def _decorate_callable(
     func: F,
-    remove_ver: Version,
     error_ver: Version,
     full_message: str,
     category: Type[Warning],
@@ -62,7 +64,6 @@ def _decorate_callable(
 
     Args:
         func: The target function to decorate
-        remove_ver: Version when functionality will be removed
         error_ver: Version when functionality starts raising errors
         full_message: Complete deprecation message
         category: Warning category to emit
@@ -85,7 +86,8 @@ def _decorate_callable(
             if current_ver and current_ver >= error_ver:
                 raise DeprecatedError(full_message)
 
-            warnings.warn(full_message, category=category, stacklevel=stacklevel)
+            warnings.warn(full_message, category=category,
+                          stacklevel=stacklevel)
             return await func(*args, **kwargs)
 
         async_wrapper.__doc__ = (
@@ -93,26 +95,24 @@ def _decorate_callable(
         )
         return cast(F, async_wrapper)
 
-    else:
+    @wraps(func)
+    def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
+        setattr(func, "__deprecated__", full_message)
 
-        @wraps(func)
-        def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
-            setattr(func, "__deprecated__", full_message)
+        current_ver = get_current_version()
+        if current_ver and current_ver >= error_ver:
+            raise DeprecatedError(full_message)
 
-            current_ver = get_current_version()
-            if current_ver and current_ver >= error_ver:
-                raise DeprecatedError(full_message)
+        warnings.warn(full_message, category=category,
+                        stacklevel=stacklevel)
+        return func(*args, **kwargs)
 
-            warnings.warn(full_message, category=category, stacklevel=stacklevel)
-            return func(*args, **kwargs)
-
-        sync_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
-        return cast(F, sync_wrapper)
+    sync_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
+    return cast(F, sync_wrapper)
 
 
 def _decorate_class(
     cls: C,
-    remove_ver: Version,
     error_ver: Version,
     full_message: str,
     category: Type[Warning],
@@ -156,7 +156,7 @@ def _decorate_class(
             cls,
             name,
             _decorate_callable(
-                method, remove_ver, error_ver, full_message, category, stacklevel + 1
+                method, error_ver, full_message, category, stacklevel + 1
             ),
         )
 
@@ -203,10 +203,10 @@ def deprecate(
     def decorator(obj: Union[F, C]) -> Union[F, C]:
         if inspect.isclass(obj):
             return _decorate_class(
-                cast(C, obj), remove_ver, error_ver, full_message, category, stacklevel
+                cast(C, obj), error_ver, full_message, category, stacklevel
             )
         return _decorate_callable(
-            cast(F, obj), remove_ver, error_ver, full_message, category, stacklevel
+            cast(F, obj), error_ver, full_message, category, stacklevel
         )
 
     return decorator
