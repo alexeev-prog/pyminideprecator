@@ -74,6 +74,7 @@ def _decorate_callable(
     Raises:
         DeprecatedError: When current version >= error_version
     """
+
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         current_ver = get_current_version()

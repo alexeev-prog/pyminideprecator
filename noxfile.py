@@ -4,7 +4,7 @@ import nox
 python_versions = ["3.10", "3.11", "3.12", "3.13"]
 
 
-@nox.session(python=python_versions, venv_backend='uv')
+@nox.session(python=python_versions, venv_backend="uv")
 def test(session):
     """Run tests on specified Python versions."""
     # Install the package and test dependencies with uv
@@ -20,18 +20,18 @@ def test(session):
     session.run(
         "pytest",
         "tests/",
-        "--cov-fail-under=100", # 100% coverage
-        "-v",                   # verbose output
-        "-s",                   # don't capture output
-        "--tb=short",           # shorter traceback format
-        "--strict-markers",     # treat unregistered markers as errors
-        "-n", "auto",           # parallel testing
-        *session.posargs        # allows passing additional pytest args from command line
+        "--cov-fail-under=100",  # 100% coverage
+        "-v",  # verbose output
+        "-s",  # don't capture output
+        "--tb=short",  # shorter traceback format
+        "--strict-markers",  # treat unregistered markers as errors
+        "-n",
+        "auto",  # parallel testing
+        *session.posargs,  # allows passing additional pytest args from command line
     )
 
 
 @nox.session
 def lint(session):
-    session.install('ruff')
-    session.run('ruff', 'check', 'src/pyminideprecator/')
-
+    session.install("ruff")
+    session.run("ruff", "check", "src/pyminideprecator/")

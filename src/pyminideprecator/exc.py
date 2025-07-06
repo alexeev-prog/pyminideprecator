@@ -8,4 +8,5 @@ class DeprecatedError(Exception):
     Attributes:
         message: Explanation of the deprecation error
     """
+
     pass

@@ -2,6 +2,8 @@ from typing import Optional, Union
 
 from .version import Version
 
+# Sorry for globals
+# TODO: fix it in future release
 _CURRENT_VERSION: Optional[Version] = None
 
 
