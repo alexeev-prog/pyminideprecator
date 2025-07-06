@@ -1,7 +1,7 @@
 import inspect
 import warnings
 from functools import wraps
-from typing import Any, Callable, Optional, Type, TypeVar, Union, cast
+from typing import Any, Callable, Optional, Type, TypeVar, Union, cast, Awaitable, Coroutine
 
 from .config import get_current_version
 from .exc import DeprecatedError
@@ -53,7 +53,7 @@ def _decorate_callable(
     category: Type[Warning],
     stacklevel: int,
 ) -> F:
-    """Decorator implementation for callable objects.
+    """Decorator implementation for callable and coroutine/awaitable objects
 
     Wraps a function or method to add deprecation behavior. Modifies the
     function to check current version and either:
@@ -75,17 +75,35 @@ def _decorate_callable(
         DeprecatedError: When current version >= error_version
     """
 
-    @wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
-        current_ver = get_current_version()
-        if current_ver and current_ver >= error_ver:
-            raise DeprecatedError(full_message)
+    if inspect.iscoroutinefunction(func):
+        @wraps(func)
+        async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
+            setattr(func, "__deprecated__", full_message)
 
-        warnings.warn(full_message, category=category, stacklevel=stacklevel)
-        return func(*args, **kwargs)
+            current_ver = get_current_version()
+            if current_ver and current_ver >= error_ver:
+                raise DeprecatedError(full_message)
 
-    wrapper.__doc__ = f"**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
-    return cast(F, wrapper)
+            warnings.warn(full_message, category=category, stacklevel=stacklevel)
+            return await func(*args, **kwargs)
+
+        async_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
+        return cast(F, async_wrapper)
+
+    else:
+        @wraps(func)
+        def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
+            setattr(func, "__deprecated__", full_message)
+
+            current_ver = get_current_version()
+            if current_ver and current_ver >= error_ver:
+                raise DeprecatedError(full_message)
+
+            warnings.warn(full_message, category=category, stacklevel=stacklevel)
+            return func(*args, **kwargs)
+
+        sync_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
+        return cast(F, sync_wrapper)
 
 
 def _decorate_class(

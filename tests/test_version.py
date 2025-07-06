@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from pyminideprecator import Version
+from pyminideprecator import Version, scoped_version
 
 
 def test_semantic_version():

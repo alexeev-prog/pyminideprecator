@@ -1,9 +1,92 @@
 import warnings
 
 import pytest
+import asyncio
 
-from pyminideprecator import DeprecatedError, deprecate, set_current_version
+from pyminideprecator import DeprecatedError, deprecate, set_current_version, scoped_version
 from pyminideprecator.deprecator import _generate_message
+
+
+def test_async_function_warning():
+    set_current_version("1.0.0")
+
+    @deprecate("2.0.0", "Test async function")
+    async def async_test_func() -> int:
+        await asyncio.sleep(0.01)
+        return 42
+
+    async def run_test():
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            result = await async_test_func()
+            assert result == 42
+            assert len(caught) == 1
+            assert issubclass(caught[0].category, DeprecationWarning)
+            assert "Test async function" in str(caught[0].message)
+
+    asyncio.run(run_test())
+
+def test_async_function_error():
+    set_current_version("2.0.0")
+
+    @deprecate("2.0.0", "Removed async function")
+    async def async_removed_func() -> str:
+        await asyncio.sleep(0.01)
+        return "should not run"
+
+    async def run_test():
+        with pytest.raises(DeprecatedError):
+            await async_removed_func()
+
+    asyncio.run(run_test())
+
+def test_async_method_deprecation():
+    set_current_version("1.0.0")
+
+    class AsyncTestClass:
+        @deprecate("2.0.0", "Deprecated async method")
+        async def async_method(self) -> int:
+            await asyncio.sleep(0.01)
+            return 42
+
+    async def run_test():
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            obj = AsyncTestClass()
+            result = await obj.async_method()
+            assert result == 42
+            assert len(caught) == 1
+            assert "Deprecated async method" in str(caught[0].message)
+
+    asyncio.run(run_test())
+
+def test_mixed_async_sync_deprecation():
+    set_current_version("1.0.0")
+
+    class MixedTestClass:
+        @deprecate("2.0.0", "Sync method")
+        def sync_method(self) -> int:
+            return 42
+
+        @deprecate("2.0.0", "Async method")
+        async def async_method(self) -> int:
+            await asyncio.sleep(0.01)
+            return 24
+
+    async def run_test():
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            obj = MixedTestClass()
+
+            # Test sync method
+            assert obj.sync_method() == 42
+
+            # Test async method
+            assert await obj.async_method() == 24
+
+            assert len(caught) == 2
+
+    asyncio.run(run_test())
 
 
 @pytest.fixture(autouse=True)
@@ -52,6 +135,22 @@ def test_error_after_remove_version():
         removed_func()
 
 
+def test_scoped_version():
+    set_current_version("2.0.1")
+
+    @deprecate("2.0.0", "Removed function")
+    def removed_func():
+        pass
+
+    with pytest.raises(DeprecatedError):
+        removed_func()
+
+    with warnings.catch_warnings(record=True) as caught:
+        with scoped_version("1.9.9"):
+            removed_func()
+            assert len(caught) == 1
+
+
 def test_custom_error_version():
     set_current_version("1.9.0")
 
@@ -64,9 +163,9 @@ def test_custom_error_version():
 
 
 def test_date_based_deprecation():
-    set_current_version("2023.06.15")
+    set_current_version("2025.06.15")
 
-    @deprecate("2023.12.31", "New year cleanup")
+    @deprecate("2025.12.31", "New year cleanup")
     def holiday_func():
         pass
 
@@ -76,7 +175,7 @@ def test_date_based_deprecation():
         assert len(caught) == 1
         assert "New year cleanup" in str(caught[0].message)
 
-    set_current_version("2024.01.01")
+    set_current_version("2026.01.01")
     with pytest.raises(DeprecatedError):
         holiday_func()
 

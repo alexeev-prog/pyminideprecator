@@ -1,53 +1,59 @@
+from contextvars import ContextVar
 from typing import Optional, Union
+from contextlib import contextmanager
 
 from .version import Version
 
-# Sorry for globals
-# TODO: fix it in future release
-_CURRENT_VERSION: Optional[Version] = None
-
+# Context-local storage for current version
+_CURRENT_VERSION: ContextVar[Optional[Version]] = ContextVar(
+    '_CURRENT_VERSION',
+    default=None
+)
 
 def set_current_version(version: Union[str, Version, None]) -> None:
-    """Sets the current application version globally.
+    """Sets the current application version in the current context.
 
-    This version is used to determine whether to show warnings or raise errors
-    for deprecated functionality. The version can be provided as either a string
-    (which will be parsed into a Version object) or directly as a Version object.
+    This version is context-aware and thread-safe. It can be:
+    - String representation (e.g., "1.2.3" or "2023.12.31")
+    - Version object instance
+    - None to clear the current version
 
     Args:
-        version: The current version to set. Can be:
-            - String representation (e.g., "1.2.3" or "2023.12.31")
-            - Version object instance
-            - None to clear the current version
+        version: The current version to set
 
     Raises:
         ValueError: If string version has invalid format
         TypeError: If invalid version type is provided
     """
-    global _CURRENT_VERSION
-
     if version is None:
-        _CURRENT_VERSION = None
+        _CURRENT_VERSION.set(None)
         return
 
     if isinstance(version, str):
-        _CURRENT_VERSION = Version(version)
-    else:
-        _CURRENT_VERSION = version
-
+        _CURRENT_VERSION.set(Version(version))
+    elif isinstance(version, Version):
+        _CURRENT_VERSION.set(version)
 
 def get_current_version() -> Optional[Version]:
-    """Retrieves the current application version.
-
-    Returns the version previously set via set_current_version(). If no version
-    has been set, returns None.
+    """Retrieves the current application version for the context.
 
     Returns:
         The current Version object if set, otherwise None.
     """
-    global _CURRENT_VERSION
+    return _CURRENT_VERSION.get()
 
-    if _CURRENT_VERSION:
-        return _CURRENT_VERSION
 
-    return None
+@contextmanager
+def scoped_version(version: str):
+    """Context manager for creating scoped version.
+
+    Args:
+        version: The scoped version
+    """
+    original = get_current_version()
+    set_current_version(version)
+
+    try:
+        yield
+    finally:
+        set_current_version(original)
