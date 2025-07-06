@@ -1,14 +1,14 @@
+from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Optional, Union
-from contextlib import contextmanager
 
 from .version import Version
 
 # Context-local storage for current version
 _CURRENT_VERSION: ContextVar[Optional[Version]] = ContextVar(
-    '_CURRENT_VERSION',
-    default=None
+    "_CURRENT_VERSION", default=None
 )
+
 
 def set_current_version(version: Union[str, Version, None]) -> None:
     """Sets the current application version in the current context.
@@ -33,6 +33,7 @@ def set_current_version(version: Union[str, Version, None]) -> None:
         _CURRENT_VERSION.set(Version(version))
     elif isinstance(version, Version):
         _CURRENT_VERSION.set(version)
+
 
 def get_current_version() -> Optional[Version]:
     """Retrieves the current application version for the context.

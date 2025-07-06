@@ -1,7 +1,7 @@
 import inspect
 import warnings
 from functools import wraps
-from typing import Any, Callable, Optional, Type, TypeVar, Union, cast, Awaitable, Coroutine
+from typing import Any, Callable, Optional, Type, TypeVar, Union, cast
 
 from .config import get_current_version
 from .exc import DeprecatedError
@@ -76,6 +76,7 @@ def _decorate_callable(
     """
 
     if inspect.iscoroutinefunction(func):
+
         @wraps(func)
         async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
             setattr(func, "__deprecated__", full_message)
@@ -87,10 +88,13 @@ def _decorate_callable(
             warnings.warn(full_message, category=category, stacklevel=stacklevel)
             return await func(*args, **kwargs)
 
-        async_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
+        async_wrapper.__doc__ = (
+            f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
+        )
         return cast(F, async_wrapper)
 
     else:
+
         @wraps(func)
         def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
             setattr(func, "__deprecated__", full_message)

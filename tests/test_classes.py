@@ -3,7 +3,6 @@ import warnings
 import pytest
 
 from pyminideprecator import DeprecatedError, deprecate, set_current_version
-from pyminideprecator.deprecator import _generate_message
 
 
 def test_deprecated_class_methods_warning():

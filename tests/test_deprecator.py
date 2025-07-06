@@ -1,9 +1,10 @@
+import asyncio
 import warnings
 
 import pytest
-import asyncio
 
-from pyminideprecator import DeprecatedError, deprecate, set_current_version, scoped_version
+from pyminideprecator import (DeprecatedError, deprecate, scoped_version,
+                              set_current_version)
 from pyminideprecator.deprecator import _generate_message
 
 
@@ -26,6 +27,7 @@ def test_async_function_warning():
 
     asyncio.run(run_test())
 
+
 def test_async_function_error():
     set_current_version("2.0.0")
 
@@ -39,6 +41,7 @@ def test_async_function_error():
             await async_removed_func()
 
     asyncio.run(run_test())
+
 
 def test_async_method_deprecation():
     set_current_version("1.0.0")
@@ -59,6 +62,7 @@ def test_async_method_deprecation():
             assert "Deprecated async method" in str(caught[0].message)
 
     asyncio.run(run_test())
+
 
 def test_mixed_async_sync_deprecation():
     set_current_version("1.0.0")
