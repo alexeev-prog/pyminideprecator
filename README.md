@@ -200,13 +200,13 @@ You control the transitions between these phases using:
 
 ### Property Deprecation
 
-For properties, ensure the deprecation decorator is placed **above** the property decorator:
+For properties, static methods and classmethods, ensure the deprecation decorator is placed **before** the property decorator:
 
 ```python
 class UserProfile:
 
-    @deprecate("3.0.0", "Use full_name instead")
     @property
+    @deprecate("3.0.0", "Use full_name instead")
     def name(self) -> str:
         return self._name
 ```
@@ -228,8 +228,8 @@ class DataProcessor:
 ```python
 class MathUtils:
 
-    @deprecate("3.1.0", "Use math.sqrt() instead")
     @staticmethod
+    @deprecate("3.1.0", "Use math.sqrt() instead")
     def square_root(x):
         return x**0.5
 ```

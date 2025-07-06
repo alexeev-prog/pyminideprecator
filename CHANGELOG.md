@@ -1,3 +1,15 @@
+commit 7d74cdcc7a105afc58df0ca13d5f19484ac3bd8a
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sun Jul 6 20:34:17 2025 +0700
+
+    fix code styler
+
+commit c83e5c5e6ab9651906fb41f24bb8fd79691088aa
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sun Jul 6 20:30:36 2025 +0700
+
+    feat/refactor: add async support, remove globals, improve tests
+
 commit d942310a88f5d625b1599a7fda40ad4d2b6ae97b
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sun Jul 6 17:44:50 2025 +0700
