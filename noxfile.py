@@ -14,6 +14,7 @@ def test(session):
         "pytest-xdist",
         "pytest-randomly",
         "pytest-sugar",
+        "pytest-coverage"
     )
 
     # Run pytest with common options

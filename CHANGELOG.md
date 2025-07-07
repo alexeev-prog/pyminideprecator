@@ -1,3 +1,9 @@
+commit 8900f7f83b155360c9a982c122d18c9b18da15db
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 10:05:42 2025 +0700
+
+    add mutant testing
+
 commit e42bf7c76fed8949bfa790ff629f2e306573592e
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 09:33:58 2025 +0700
