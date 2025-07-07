@@ -47,6 +47,7 @@
 - ⚙️ **Flexible version comparison** (semantic and date-based)
 - 🛡️ **Gradual deprecation** with warning-to-error transition
 - ⚡ **Full async support** for coroutines and asynchronous workflows
+- 🧩 **100% tests coverage with mutants testing** for stable work
 
 ## Why Use pyminideprecator?
 

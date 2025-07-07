@@ -1,3 +1,9 @@
+commit 1b4420cb6c1f3e1741ca4c1141da7f67300c2f15
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 10:08:03 2025 +0700
+
+    fix noxfile for tests
+
 commit 8900f7f83b155360c9a982c122d18c9b18da15db
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 10:05:42 2025 +0700
