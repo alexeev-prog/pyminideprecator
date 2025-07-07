@@ -90,7 +90,6 @@ def test_docstring_modification():
     @deprecate("2.0.0", "Doc test")
     def documented_func():
         """Original docs"""
-        pass
 
     docs = str(documented_func.__doc__)
     assert "DEPRECATED" in docs

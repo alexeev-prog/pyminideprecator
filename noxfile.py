@@ -11,10 +11,7 @@ def test(session):
     session.run_always("uv", "pip", "install", ".", external=True)
 
     session.install(
-        "pytest-xdist",
-        "pytest-randomly",
-        "pytest-sugar",
-        "pytest-coverage"
+        "pytest-xdist", "pytest-randomly", "pytest-sugar", "pytest-coverage"
     )
 
     # Run pytest with common options

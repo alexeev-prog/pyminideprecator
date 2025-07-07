@@ -1,3 +1,15 @@
+commit 100cf3441df6b11ebfd4120c2d54f097005e4dba
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 15:18:40 2025 +0700
+
+    feat: add global versions support
+
+commit 1016676ace319c1f0fcc93a7b4d090aee94d35fe
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 10:16:55 2025 +0700
+
+    improve docs
+
 commit 1b4420cb6c1f3e1741ca4c1141da7f67300c2f15
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 10:08:03 2025 +0700

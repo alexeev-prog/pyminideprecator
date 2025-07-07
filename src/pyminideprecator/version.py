@@ -1,6 +1,5 @@
-"""
-Version module for pyminideprecator.
-"""
+"""Version module for pyminideprecator."""
+
 from datetime import date, datetime
 
 
@@ -26,22 +25,34 @@ class Version:
     """
 
     def __init__(self, version_str: str) -> None:
+        """
+        Initialize a version class.
+
+        Args:
+            version_str (str): version as string.
+
+        Raises:
+            ValueError: invalid version format.
+
+        """
         self.raw: str = version_str
         self.is_date: bool = False
         self.parts: tuple[int, ...] = ()
         self.date: date = date(1970, 1, 1)
 
         try:
-            self.date = datetime.strptime(version_str, "%Y.%m.%d").date()
+            self.date = datetime.strptime(version_str, "%Y.%m.%d").date()  # noqa: DTZ007
             self.is_date = True
-            return
         except ValueError:
             pass
 
-        try:
-            self.parts = tuple(int(part) for part in version_str.split("."))
-        except ValueError as ex:
-            raise ValueError(f"Invalid version format: {version_str} ({ex})") from ex
+        if not self.is_date:
+            try:
+                self.parts = tuple(int(part) for part in version_str.split("."))
+            except ValueError as ex:
+                raise ValueError(
+                    f"Invalid version format: {version_str} ({ex})"
+                ) from ex
 
     def __lt__(self, other: "Version") -> bool:
         """

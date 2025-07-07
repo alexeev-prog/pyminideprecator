@@ -1,6 +1,5 @@
-"""
-Add a support for configuration of pyminideprecator
-"""
+"""Add a support for configuration of pyminideprecator."""
+
 from contextlib import contextmanager
 from contextvars import ContextVar
 
@@ -14,7 +13,10 @@ _CURRENT_VERSION: ContextVar[Version | None] = ContextVar(
 _CURRENT_GLOBAL_VARIABLE: Version | None = None
 
 
-def set_current_version(version: str | Version | None, set_global: bool = False) -> None:
+def set_current_version(
+    version: str | Version | None,
+    set_global: bool | None = False,  # noqa: FBT001, FBT002
+) -> None:
     """
     Sets the current application version in the current context.
 
@@ -32,7 +34,7 @@ def set_current_version(version: str | Version | None, set_global: bool = False)
         TypeError: If invalid version type is provided
 
     """
-    global _CURRENT_GLOBAL_VARIABLE
+    global _CURRENT_GLOBAL_VARIABLE  # noqa: PLW0603
 
     if set_global:
         if version is None:

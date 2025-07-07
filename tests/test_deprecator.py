@@ -3,8 +3,12 @@ import warnings
 
 import pytest
 
-from pyminideprecator import (DeprecatedError, deprecate, scoped_version,
-                              set_current_version)
+from pyminideprecator import (
+    DeprecatedError,
+    deprecate,
+    scoped_version,
+    set_current_version,
+)
 from pyminideprecator.deprecator import _generate_message
 
 
@@ -190,7 +194,6 @@ def test_docstring_modification():
     @deprecate("2.0.0", "Doc test")
     def documented_func():
         """Original docs"""
-        pass
 
     docs = str(documented_func.__doc__)
     assert "DEPRECATED" in docs
@@ -259,8 +262,6 @@ def test_class_docstring():
     @deprecate("2.0.0", "Class doc test")
     class DocumentedClass:
         """Original class docs"""
-
-        pass
 
     docs = str(DocumentedClass.__doc__)
     assert "DEPRECATED CLASS" in docs

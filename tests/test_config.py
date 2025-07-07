@@ -1,6 +1,7 @@
 import pytest
-from pyminideprecator.exc import DeprecatedError
+
 from pyminideprecator.config import get_current_version, set_current_version
+from pyminideprecator.exc import DeprecatedError
 from pyminideprecator.version import Version
 
 
@@ -13,6 +14,7 @@ def test_set_version_with_string():
 
 def test_global_version_with_imports(monkeypatch):
     import global_version_module
+
     set_current_version("3.0.0", set_global=True)
 
     with pytest.raises(DeprecatedError):
@@ -23,6 +25,7 @@ def test_global_version_with_imports(monkeypatch):
 
 def test_global_class_version_with_imports(monkeypatch):
     import global_version_module
+
     set_current_version(Version("3.0.0"), set_global=True)
 
     with pytest.raises(DeprecatedError):
