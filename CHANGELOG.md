@@ -1,3 +1,9 @@
+commit b19393918b146b75cd378ff7a00cfa1d1e12082a
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 09:31:27 2025 +0700
+
+    remove trash-files, upload new version
+
 commit bd701b9b1b41cb4a2c418b0a252cbe3bfd48e646
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sun Jul 6 23:17:28 2025 +0700

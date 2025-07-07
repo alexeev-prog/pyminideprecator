@@ -200,7 +200,7 @@ You control the transitions between these phases using:
 
 ### Property Deprecation
 
-For properties, static methods and classmethods, ensure the deprecation decorator is placed **before** the property decorator:
+For properties, static methods and classmethods, ensure the deprecation decorator is placed **after** the property decorator:
 
 ```python
 class UserProfile:
@@ -380,8 +380,8 @@ The core decorator for marking deprecated functionality.
 
 | Function | Description |
 |----------|-------------|
-| `set_current_version(version: str | Version | None)` | Sets the current version for the context |
-| `get_current_version() -> Version | None` | Gets the current version for the context |
+| `set_current_version(version: Union[str, Version, None])` | Sets the current version for the context |
+| `get_current_version() -> Union[Version, None]` | Gets the current version for the context |
 | `scoped_version(version: str) -> ContextManager` | Temporarily sets version in a context |
 
 ### Version Class
@@ -514,7 +514,7 @@ Benchmarks show:
 4. Use `scoped_version()` instead of mock.patch for version overrides
 5. Remove manual async handling - now automatic
 
-### From v0.x to v1.x
+### From v0.1 to v0.2
 
 1. Context-aware versioning replaces global state
 2. Thread safety improvements
