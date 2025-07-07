@@ -10,9 +10,11 @@ from pyminideprecator.version import Version
 _CURRENT_VERSION: ContextVar[Version | None] = ContextVar(
     "_CURRENT_VERSION", default=None
 )
+# Global variable
+_CURRENT_GLOBAL_VARIABLE: Version | None = None
 
 
-def set_current_version(version: str | Version | None) -> None:
+def set_current_version(version: str | Version | None, set_global: bool = False) -> None:
     """
     Sets the current application version in the current context.
 
@@ -23,12 +25,23 @@ def set_current_version(version: str | Version | None) -> None:
 
     Args:
         version: The current version to set
+        set_global: True is set version as global, False as the set version to context
 
     Raises:
         ValueError: If string version has invalid format
         TypeError: If invalid version type is provided
 
     """
+    global _CURRENT_GLOBAL_VARIABLE
+
+    if set_global:
+        if version is None:
+            _CURRENT_GLOBAL_VARIABLE = None
+        elif isinstance(version, str):
+            _CURRENT_GLOBAL_VARIABLE = Version(version)
+        elif isinstance(version, Version):
+            _CURRENT_GLOBAL_VARIABLE = version
+
     if version is None:
         _CURRENT_VERSION.set(None)
         return
@@ -41,13 +54,13 @@ def set_current_version(version: str | Version | None) -> None:
 
 def get_current_version() -> Version | None:
     """
-    Retrieves the current application version for the context.
+    Retrieves the current application version for the context or global scope.
 
     Returns:
         The current Version object if set, otherwise None.
 
     """
-    return _CURRENT_VERSION.get()
+    return _CURRENT_VERSION.get() or _CURRENT_GLOBAL_VARIABLE
 
 
 @contextmanager
