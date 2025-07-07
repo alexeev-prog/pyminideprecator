@@ -35,3 +35,9 @@ def test(session):
 def lint(session):
     session.install("ruff")
     session.run("ruff", "check", "src/pyminideprecator/")
+
+
+@nox.session
+def mutants(session):
+    session.install("mutmut")
+    session.run("mutmut", "run")
