@@ -34,6 +34,14 @@ todo_include_todos = True  # include todo in docs
 auto_doc_default_options = {'autosummary': True}
 
 autodoc_mock_imports = []
+autodoc_typehints = 'description'
+autodoc_member_order = 'bysource'
+autosummary_generate = True
+napoleon_include_init_with_doc = True
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+}
 
 
 def skip(app, what, name, obj, would_skip, options):

@@ -1,3 +1,18 @@
+commit c403328b184aa72971adf08a140786ab75e033f0
+Merge: 1ebb8cb 40bcf03
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Jul 9 00:02:57 2025 +0700
+
+    Merge pull request #1 from alexeev-prog/dependabot/github_actions/actions/setup-python-5
+    
+    Bump actions/setup-python from 3 to 5
+
+commit 1ebb8cb5b4a00153f9ae8c348c6db4ff0b3d73f2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Tue Jul 8 15:05:51 2025 +0700
+
+    add thread-local global version container, add equals comparison to version
+
 commit 91b167f1903f018ee1913e93867b21eecd12f33f
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 20:49:03 2025 +0700
@@ -9,6 +24,26 @@ Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 15:18:40 2025 +0700
 
     feat: add global versions support
+
+commit 40bcf03562cc317a03dfc7bd9b3b3f03e70f3e33
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Mon Jul 7 05:12:27 2025 +0000
+
+    Bump actions/setup-python from 3 to 5
+    
+    Bumps [actions/setup-python](https://github.com/actions/setup-python) from 3 to 5.
+    - [Release notes](https://github.com/actions/setup-python/releases)
+    - [Commits](https://github.com/actions/setup-python/compare/v3...v5)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/setup-python
+      dependency-version: '5'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
 
 commit 1016676ace319c1f0fcc93a7b4d090aee94d35fe
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
