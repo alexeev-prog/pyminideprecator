@@ -1,6 +1,6 @@
 [project]
 name = "pyminideprecator"
-version = "0.2.0"
+version = "0.2.1"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -88,6 +88,7 @@ dev = [
     "hugo>=0.147.9",
     "mutmut>=3.3.0",
     "nox>=2025.5.1",
+    "pyrefly>=0.23.0",
     "pytest>=8.4.1",
     "pytest-coverage>=0.0",
     "ruff>=0.12.2",

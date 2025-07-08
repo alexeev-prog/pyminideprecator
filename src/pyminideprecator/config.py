@@ -1,5 +1,6 @@
 """Add a support for configuration of pyminideprecator."""
 
+import threading
 from contextlib import contextmanager
 from contextvars import ContextVar
 
@@ -9,13 +10,15 @@ from pyminideprecator.version import Version
 _CURRENT_VERSION: ContextVar[Version | None] = ContextVar(
     "_CURRENT_VERSION", default=None
 )
-# Global variable
-_CURRENT_GLOBAL_VARIABLE: Version | None = None
+
+# Thread-local global variable
+_thread_local = threading.local()
+_thread_local.version = None
 
 
 def set_current_version(
     version: str | Version | None,
-    set_global: bool | None = False,  # noqa: FBT001, FBT002
+    set_global: bool = False,  # noqa: FBT001, FBT002
 ) -> None:
     """
     Sets the current application version in the current context.
@@ -34,15 +37,15 @@ def set_current_version(
         TypeError: If invalid version type is provided
 
     """
-    global _CURRENT_GLOBAL_VARIABLE  # noqa: PLW0603
-
     if set_global:
         if version is None:
-            _CURRENT_GLOBAL_VARIABLE = None
+            _thread_local.version = None
         elif isinstance(version, str):
-            _CURRENT_GLOBAL_VARIABLE = Version(version)
+            _thread_local.version = Version(version)
         elif isinstance(version, Version):
-            _CURRENT_GLOBAL_VARIABLE = version
+            _thread_local.version = version
+        else:
+            raise TypeError(f"Invalid version type: {type(version)}")
 
     if version is None:
         _CURRENT_VERSION.set(None)
@@ -62,7 +65,11 @@ def get_current_version() -> Version | None:
         The current Version object if set, otherwise None.
 
     """
-    return _CURRENT_VERSION.get() or _CURRENT_GLOBAL_VARIABLE
+    ctx_ver = _CURRENT_VERSION.get()
+    if ctx_ver is not None:
+        return ctx_ver
+
+    return getattr(_thread_local, "version", None)
 
 
 @contextmanager

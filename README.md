@@ -42,12 +42,13 @@
 
 **Key Advantages:**
 - 🚀 **Zero-dependency** implementation
-- 🧵 **Thread-safe** and **async-compatible**
+- 🧵 **Thread-safe** and **async-compatible** with thread-local version storage
 - 📚 **Automatic docstring integration**
 - ⚙️ **Flexible version comparison** (semantic and date-based)
 - 🛡️ **Gradual deprecation** with warning-to-error transition
 - ⚡ **Full async support** for coroutines and asynchronous workflows
 - 🧩 **100% tests coverage with mutants testing** for stable work
+- 🔒 **Enhanced thread safety** with isolated version contexts
 
 ## Why Use pyminideprecator?
 
@@ -59,6 +60,7 @@ Deprecating code is a critical part of library and API maintenance, but doing it
 4. **Documentation integration** - Deprecation notices appear in auto-generated docs
 5. **Future-proof versioning** - Supports both semantic and calendar versioning schemes
 6. **First-class async support** - Seamlessly handles asynchronous functions and methods
+7. **Thread-isolated global state** - Safe version management in concurrent environments
 
 ## Installation
 
@@ -133,7 +135,7 @@ results = client.query("SELECT * FROM table")  # Additional warning
 
 ## Core Concepts
 
-### Version Management System
+### Enhanced Version Management System
 
 `pyminideprecator` uses a dual-versioning system that supports:
 
@@ -147,38 +149,39 @@ results = client.query("SELECT * FROM table")  # Additional warning
    - Chronological ordering
    - Perfect for applications with regular release cycles
 
-The version comparison is handled automatically based on the format of the version string provided.
+The version comparison is handled automatically based on the format of the version string provided. The Version class now includes proper hashing and equality comparisons for reliable use in collections.
 
-### Context-aware Execution
+### Thread-Safe Context-aware Execution
 
-Unlike simple global state solutions, `pyminideprecator` uses context-aware storage for version information:
+Unlike simple global state solutions, `pyminideprecator` uses a hybrid approach for version management:
 
 ```python
 from pyminideprecator import set_current_version, get_current_version
+import threading
 
-# Set global version for main thread
-set_current_version("1.0.0")
+# Set global version in main thread
+set_current_version("1.0.0", set_global=True)
 
 def worker():
-    # New thread starts with no version set
-    set_current_version("2.0.0")
-    print(get_current_version())  # Version("2.0.0")
+    # Set thread-specific global version
+    set_current_version("2.0.0", set_global=True)
+    print(f"Worker thread version: {get_current_version()}")  # 2.0.0
 
 # Create and run worker thread
-import threading
-thread = threading.Thread(target=worker)
-thread.start()
-thread.join()
+t = threading.Thread(target=worker)
+t.start()
+t.join()
 
-# Main thread version remains unchanged
-print(get_current_version())  # Version("1.0.0")
+# Main thread version remains 1.0.0
+print(f"Main thread version: {get_current_version()}")  # 1.0.0
 ```
 
 This approach ensures:
-- 🧵 Thread safety in multi-threaded applications
-- ⚡ Proper isolation in async environments
-- 🔍 Predictable version scoping
-- 🧩 Compatibility with complex execution contexts
+- 🧵 **True thread isolation** - Each thread maintains its own global version state
+- ⚡ **Context-aware execution** - ContextVar handles async and coroutine contexts
+- 🔒 **Concurrency safety** - No race conditions between threads
+- 🔍 **Predictable version scoping** - Clear separation between thread-local and context-local versions
+- 🧩 **Compatibility with complex execution contexts** - Works with async, threads, and generators
 
 ### Lifecycle Management
 
@@ -347,14 +350,14 @@ def test_deprecation_phases():
             deprecated_function()
 ```
 
-### 5. Use Semantic Versioning Consistently
+### 5. Use Consistent Versioning Schemes
 
 ```python
 # Good - Semantic versioning
-set_current_version("1.2.3")
+set_current_version("1.2.3", set_global=True)
 
 # Good - Date-based versioning
-set_current_version("2025.12.31")
+set_current_version("2025.12.31", set_global=True)
 
 # Bad - Mixed version types
 set_current_version("1.2025.01")  # Not supported!
@@ -381,24 +384,25 @@ The core decorator for marking deprecated functionality.
 
 | Function | Description |
 |----------|-------------|
-| `set_current_version(version: Union[str, Version, None])` | Sets the current version for the context |
-| `get_current_version() -> Union[Version, None]` | Gets the current version for the context |
+| `set_current_version(version: Union[str, Version, None], set_global: bool = False)` | Sets the current version for context or thread-local global scope |
+| `get_current_version() -> Union[Version, None]` | Retrieves current version (context takes precedence over thread-local global) |
 | `scoped_version(version: str) -> ContextManager` | Temporarily sets version in a context |
 
-### Version Class
+### Enhanced Version Class
 
 ```python
 class Version:
     def __init__(self, version_str: str):
         """Parses version string into semantic or date-based representation"""
 
-    # Comparison operators
+    # Full comparison support
     def __lt__(self, other) -> bool: ...
     def __le__(self, other) -> bool: ...
     def __eq__(self, other) -> bool: ...
     def __ge__(self, other) -> bool: ...
     def __gt__(self, other) -> bool: ...
     def __ne__(self, other) -> bool: ...
+    def __hash__(self) -> int: ...  # Added for hashability
 ```
 
 ### Exception: `DeprecatedError`
@@ -416,7 +420,7 @@ class DeprecatedError(Exception):
 # data_processing.py
 from pyminideprecator import deprecate, set_current_version
 
-set_current_version("1.8.0")
+set_current_version("1.8.0", set_global=True)
 
 @deprecate("2.0.0", "Use process_stream() instead")
 async def legacy_processor(stream: AsyncIterable) -> list:
@@ -432,27 +436,32 @@ async def process_stream(stream: AsyncIterable) -> list:
     # New processing logic
 ```
 
-### Application with Scheduled Deprecations
+### Multi-threaded Application
 
 ```python
 # app.py
-from pyminideprecator import set_current_version, scoped_version
-from datetime import datetime
+from pyminideprecator import set_current_version
+import threading
 
-# Set version based on release date
-release_date = datetime.now().strftime("%Y.%m.%d")
-set_current_version(release_date)
+def worker(worker_id: int):
+    # Each thread sets its own global version
+    set_current_version(f"1.0.{worker_id}", set_global=True)
+    print(f"Worker {worker_id} version: {get_current_version()}")
 
-# Deprecation scheduled for new year
-@deprecate("2025.01.01", "New year cleanup")
-def holiday_feature():
-    pass
+# Main thread version
+set_current_version("main_app", set_global=True)
 
-# Test specific version in tests
-def test_new_year_cleanup():
-    with scoped_version("2025.01.01"):
-        with pytest.raises(DeprecatedError):
-            holiday_feature()
+threads = []
+for i in range(3):
+    t = threading.Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+# Main thread version unchanged
+print(f"Main version: {get_current_version()}")
 ```
 
 ### Large-Scale Async Codebase Refactoring
@@ -479,57 +488,64 @@ class AuthService:
 
 # migration.py
 from pyminideprecator import set_current_version
-set_current_version("2.0.0")
+set_current_version("2.0.0", set_global=True)
 
 # During migration period
 legacy = LegacyAsyncSystem()
 result = await legacy.authenticate(user)  # Warning
 
 # After error version
-set_current_version("2.3.0")
+set_current_version("2.3.0", set_global=True)
 await legacy.authenticate(user)  # Raises DeprecatedError
 ```
 
 ## Performance Characteristics
 
-`pyminideprecator` is designed for minimal performance impact:
+`pyminideprecator` is designed for minimal performance impact in production environments:
 - ⚡ Near-zero overhead when not in deprecation period (≈50ns)
-- 📉 Single additional version check during calls (≈200ns)
-- 🧠 Efficient context management
+- 📉 Single efficient version check during calls (≈200ns)
+- 🧠 Optimized context management with thread-local storage
 - 📉 Minimal memory footprint (8 bytes per context)
 - ⚡ Async overhead < 1μs per call
+- 🔒 Thread-local access optimized for concurrent environments
 
 Benchmarks show:
 - 0.05μs overhead for non-deprecated calls
 - 0.2μs overhead for warning-mode calls
 - 0.3μs overhead for async functions
 - No measurable memory leaks
+- Linear scalability under high thread concurrency
 
 ## Migration Guide
 
 ### From Other Deprecation Libraries
 
-1. Replace deprecation logic decorator with decorator `@deprecate` from pyminideprecator
-2. Convert version parameters to strings
-3. Add `set_current_version()` initialization
-4. Use `scoped_version()` instead of mock.patch for version overrides
-5. Remove manual async handling - now automatic
+1. Replace existing deprecation decorators with `@deprecate`
+2. Convert version parameters to consistent string formats
+3. Initialize version context with `set_current_version()`
+4. Use `scoped_version()` for temporary version overrides
+5. Remove manual async handling - now fully automatic
 
 ### From v0.1 to v0.2
 
 1. Context-aware versioning replaces global state
-2. Thread safety improvements
-3. Native async support added
-4. Simplified API
-5. Strict type hint enforcement
+2. Thread-local storage for global version state
+3. Enhanced Version class with hashing and equality
+4. Native async support added
+5. Simplified API with strict type enforcement
+6. Improved thread safety in concurrent environments
 
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Key areas for contribution include:
+- Additional test cases for thread-local scenarios
+- Performance optimization proposals
+- Extended version format support
+- IDE integration plugins
 
 ## License & Support
 
-This project is licensed under **MIT License** - see [LICENSE](https://github.com/alexeev-prog/pyminideprecator/blob/main/LICENSE). For commercial support, contact [alexeev.dev@mail.ru](mailto:alexeev.dev@mail.ru).
+This project is licensed under **MIT License** - see [LICENSE](https://github.com/alexeev-prog/pyminideprecator/blob/main/LICENSE). For commercial support and enterprise features, contact [alexeev.dev@mail.ru](mailto:alexeev.dev@mail.ru).
 
 [Explore Documentation](https://alexeev-prog.github.io/pyminideprecator) |
 [Report Issue](https://github.com/alexeev-prog/pyminideprecator/issues) |

@@ -55,7 +55,7 @@ pytest --cov=pyminideprecator --cov-report=term-missing
 ```bash
 black --check .
 flake8
-mypy pyminideprecator
+pyrefly src/pyminideprecator
 ```
 
 ## Pull Request Guidelines

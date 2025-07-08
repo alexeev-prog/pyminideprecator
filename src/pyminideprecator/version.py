@@ -36,12 +36,16 @@ class Version:
 
         """
         self.raw: str = version_str
+        self.hash = hash(self.raw)
         self.is_date: bool = False
         self.parts: tuple[int, ...] = ()
         self.date: date = date(1970, 1, 1)
 
         try:
-            self.date = datetime.strptime(version_str, "%Y.%m.%d").date()  # noqa: DTZ007
+            self.date = datetime.strptime(  # noqa: DTZ007
+                version_str, "%Y.%m.%d"
+            ).date()
+
             self.is_date = True
         except ValueError:
             pass
@@ -90,6 +94,29 @@ class Version:
 
         """
         return not self < other
+
+    def __hash__(self) -> int:
+        """
+        Get version object hash.
+
+        Returns:
+            version object hash
+
+        """
+        return self.hash
+
+    def __eq__(self, other: object) -> bool:
+        """
+        Implements equals comparison between versions.
+
+        Args:
+            other: object to comparison.
+
+        Returns:
+            True if this version is equals than other version
+
+        """
+        return hash(self) == hash(other)
 
     def __repr__(self) -> str:
         """

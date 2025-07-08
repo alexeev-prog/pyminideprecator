@@ -1,3 +1,9 @@
+commit 91b167f1903f018ee1913e93867b21eecd12f33f
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Mon Jul 7 20:49:03 2025 +0700
+
+    refactor code style, new linter rules
+
 commit 100cf3441df6b11ebfd4120c2d54f097005e4dba
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Mon Jul 7 15:18:40 2025 +0700
