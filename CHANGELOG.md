@@ -1,3 +1,9 @@
+commit e8a5ef246b2335312ec67ce85bdbbbdacec5ccf3
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Jul 9 00:10:02 2025 +0700
+
+    update docs
+
 commit c403328b184aa72971adf08a140786ab75e033f0
 Merge: 1ebb8cb 40bcf03
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>

@@ -11,8 +11,8 @@ sys.path.insert(0, os.path.abspath('src/pyminideprecator'))
 
 project = 'pyminideprecator'
 author = 'name'
-version = '0.1.0'
-release = '0.1'
+version = '0.2.1'
+release = '0.2'
 project_copyright = '2025, Alexeev Bronislaw'
 
 extensions = [
