@@ -5,31 +5,31 @@ import subprocess
 import sys
 
 # Define color codes for output
-RED = '\033[31m'
-GREEN = '\033[32m'
-YELLOW = '\033[33m'
-NC = '\033[0m'  # No Color
-BOLD = '\033[1m'  # No Color
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+NC = "\033[0m"  # No Color
+BOLD = "\033[1m"  # No Color
 
 # File Extension filter. You can add new extension
-py_extensions = ('.py',)
-IGNORED_DIRS = ['dist', '.git', 'docs', 'ignored', '.venv', 'venv', 'resources']
+py_extensions = (".py",)
+IGNORED_DIRS = ["dist", ".git", "docs", "ignored", ".venv", "venv", "resources"]
 
-RUFF = 'ruff'
-SPACETABS = './space-tabs.sh'
+RUFF = "ruff"
+SPACETABS = "./space-tabs.sh"
 
 print(f'api code-formatter: {RUFF}; Extensions: {" ".join(py_extensions)}')
 
 
 def print_usage():
     """Print the usage instructions."""
-    print(f'{YELLOW}Usage: convert_tabs(file_path, tab_size, conversion_type){NC}')
+    print(f"{YELLOW}Usage: convert_tabs(file_path, tab_size, conversion_type){NC}")
     print("<conversion_type>: 'spaces' or 'tabs'")
 
 
 def print_error(message):
     """Print error messages."""
-    print(f'{RED}Error: {message}{NC}')
+    print(f"{RED}Error: {message}{NC}")
 
 
 def validate_positive_integer(value):
@@ -40,14 +40,14 @@ def validate_positive_integer(value):
             raise ValueError
         return int_value
     except ValueError:
-        print_error('Tab size must be a positive integer.')
+        print_error("Tab size must be a positive integer.")
         return None
 
 
 def file_exists(file_path):
     """Check if the file exists."""
     if not os.path.isfile(file_path):
-        print_error(f'File not found: {file_path}')
+        print_error(f"File not found: {file_path}")
         return False
     return True
 
@@ -55,19 +55,19 @@ def file_exists(file_path):
 def convert_tabs(file_path, tab_size, conversion_type):
     """Convert tabs to spaces or spaces to tabs based on conversion type."""
     try:
-        if conversion_type == 'spaces':
-            print(f'{BOLD}Converting tabs to spaces...{NC}')
+        if conversion_type == "spaces":
+            print(f"{BOLD}Converting tabs to spaces...{NC}")
             subprocess.run(
-                ['expand', '-t', str(tab_size), file_path],
+                ["expand", "-t", str(tab_size), file_path],
                 check=False,
-                stdout=open(f'{file_path}.tmp', 'w'),
+                stdout=open(f"{file_path}.tmp", "w"),
             )
-        elif conversion_type == 'tabs':
-            print(f'{BOLD}Converting spaces to tabs...{NC}')
+        elif conversion_type == "tabs":
+            print(f"{BOLD}Converting spaces to tabs...{NC}")
             subprocess.run(
-                ['unexpand', '-t', str(tab_size), file_path],
+                ["unexpand", "-t", str(tab_size), file_path],
                 check=False,
-                stdout=open(f'{file_path}.tmp', 'w'),
+                stdout=open(f"{file_path}.tmp", "w"),
             )
         else:
             print_error(
@@ -75,10 +75,10 @@ def convert_tabs(file_path, tab_size, conversion_type):
             )
             return
 
-        os.replace(f'{file_path}.tmp', file_path)
-        print(f'{GREEN}Conversion completed successfully: {file_path}{NC}')
+        os.replace(f"{file_path}.tmp", file_path)
+        print(f"{GREEN}Conversion completed successfully: {file_path}{NC}")
     except Exception as e:
-        print_error(f'Conversion failed: {e!s}')
+        print_error(f"Conversion failed: {e!s}")
 
 
 def main():
@@ -88,29 +88,29 @@ def main():
     # and "-i" is in-place editing
 
     # os.system("pylint pyechonext --clear-cache-post-run y")
-    os.system('isort .')
-    os.system('black .')
+    os.system("isort .")
+    os.system("black .")
 
     if len(sys.argv) > 1:
-        print(f'{BOLD}Format {sys.argv[1]}{NC}')
-        os.system(f'{RUFF} check {sys.argv[1]} --fix')
-        os.system(f'{RUFF} format {sys.argv[1]}')
-        print(f'{GREEN}Formatting completed successfully: {sys.argv[1]}{NC}')
+        print(f"{BOLD}Format {sys.argv[1]}{NC}")
+        os.system(f"{RUFF} check {sys.argv[1]} --fix")
+        os.system(f"{RUFF} format {sys.argv[1]}")
+        print(f"{GREEN}Formatting completed successfully: {sys.argv[1]}{NC}")
         return
 
     for root, dirs, files in os.walk(os.getcwd()):
-        if len(set(root.split('/')).intersection(IGNORED_DIRS)) > 0:
+        if len(set(root.split("/")).intersection(IGNORED_DIRS)) > 0:
             continue
         for file in files:
             if file.endswith(py_extensions):
-                print(f'{BOLD}Format {file}: {root}/{file}{NC}')
-                os.system(f'{RUFF} check {root}/{file} --fix')
-                os.system(f'{RUFF} format {root}/{file}')
-                os.system(f'flake8 {file} --select=WPS')
-                print(f'{GREEN}Formatting completed successfully: {root}/{file}{NC}')
+                print(f"{BOLD}Format {file}: {root}/{file}{NC}")
+                os.system(f"{RUFF} check {root}/{file} --fix")
+                os.system(f"{RUFF} format {root}/{file}")
+                os.system(f"flake8 {file} --select=WPS")
+                print(f"{GREEN}Formatting completed successfully: {root}/{file}{NC}")
 
-    os.system('ruff clean')
+    os.system("ruff clean")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

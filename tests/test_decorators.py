@@ -11,39 +11,39 @@ def reset_config():
 
 
 def test_function_warning():
-    set_current_version('1.0.0')
+    set_current_version("1.0.0")
 
-    @deprecate('2.0.0', 'Test function')
+    @deprecate("2.0.0", "Test function")
     def test_func() -> int:
         return 42
 
     with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter('always')
+        warnings.simplefilter("always")
         assert test_func() == 42
         assert len(caught) == 1
         assert issubclass(caught[0].category, DeprecationWarning)
-        assert 'Test function' in str(caught[0].message)
+        assert "Test function" in str(caught[0].message)
 
 
 def test_class_warning():
-    set_current_version('1.5.0')
+    set_current_version("1.5.0")
 
-    @deprecate('2.0.0', 'Test class')
+    @deprecate("2.0.0", "Test class")
     class TestClass:
         def method(self) -> str:
-            return 'test'
+            return "test"
 
     with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter('always')
+        warnings.simplefilter("always")
         obj = TestClass()
-        assert obj.method() == 'test'
+        assert obj.method() == "test"
         assert len(caught) == 2
 
 
 def test_error_after_remove_version():
-    set_current_version('2.0.0')
+    set_current_version("2.0.0")
 
-    @deprecate('2.0.0', 'Removed function')
+    @deprecate("2.0.0", "Removed function")
     def removed_func():
         pass
 
@@ -52,9 +52,9 @@ def test_error_after_remove_version():
 
 
 def test_custom_error_version():
-    set_current_version('1.9.0')
+    set_current_version("1.9.0")
 
-    @deprecate(remove_version='2.0.0', message='Early error', error_version='1.9.0')
+    @deprecate(remove_version="2.0.0", message="Early error", error_version="1.9.0")
     def early_error_func():
         pass
 
@@ -63,51 +63,51 @@ def test_custom_error_version():
 
 
 def test_date_based_deprecation():
-    set_current_version('2023.06.15')
+    set_current_version("2023.06.15")
 
-    @deprecate('2023.12.31', 'New year cleanup')
+    @deprecate("2023.12.31", "New year cleanup")
     def holiday_func():
         pass
 
     with warnings.catch_warnings():
-        warnings.simplefilter('ignore', category=DeprecationWarning)
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         holiday_func()
 
     with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter('always')
+        warnings.simplefilter("always")
         holiday_func()
         assert len(caught) == 1
-        assert 'New year cleanup' in str(caught[0].message)
+        assert "New year cleanup" in str(caught[0].message)
 
-    set_current_version('2024.01.01')
+    set_current_version("2024.01.01")
     with pytest.raises(DeprecatedError):
         holiday_func()
 
 
 def test_docstring_modification():
-    set_current_version('1.0.0')
+    set_current_version("1.0.0")
 
-    @deprecate('2.0.0', 'Doc test')
+    @deprecate("2.0.0", "Doc test")
     def documented_func():
         """Original docs"""
 
     docs = str(documented_func.__doc__)
-    assert 'DEPRECATED' in docs
-    assert 'Doc test' in docs
-    assert 'Original docs' in docs
+    assert "DEPRECATED" in docs
+    assert "Doc test" in docs
+    assert "Original docs" in docs
 
 
 def test_method_deprecation():
-    set_current_version('1.0.0')
+    set_current_version("1.0.0")
 
     class TestClass:
-        @deprecate('2.0.0', 'Deprecated method')
+        @deprecate("2.0.0", "Deprecated method")
         def test_method(self) -> int:
             return 42
 
     with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter('always')
+        warnings.simplefilter("always")
         obj = TestClass()
         assert obj.test_method() == 42
         assert len(caught) == 1
-        assert 'Deprecated method' in str(caught[0].message)
+        assert "Deprecated method" in str(caught[0].message)
