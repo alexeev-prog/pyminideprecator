@@ -93,7 +93,7 @@ def _decorate_callable(
             return await func(*args, **kwargs)
 
         async_wrapper.__doc__ = (
-            f'!**DEPRECATED** {full_message}\n\n{func.__doc__ or ""}'
+            f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
         )
         return cast(F, async_wrapper)
 
@@ -108,7 +108,7 @@ def _decorate_callable(
         warnings.warn(full_message, category=category, stacklevel=stacklevel)
         return func(*args, **kwargs)
 
-    sync_wrapper.__doc__ = f'!**DEPRECATED** {full_message}\n\n{func.__doc__ or ""}'
+    sync_wrapper.__doc__ = f"!**DEPRECATED** {full_message}\n\n{func.__doc__ or ''}"
     return cast(F, sync_wrapper)
 
 
@@ -163,7 +163,7 @@ def _decorate_class(
             ),
         )
 
-    cls.__doc__ = f'**DEPRECATED CLASS** {full_message}\n\n{cls.__doc__ or ""}'
+    cls.__doc__ = f"**DEPRECATED CLASS** {full_message}\n\n{cls.__doc__ or ''}"
     return cls
 
 

@@ -11,7 +11,7 @@ set_current_version("1.2.0")
     since="1.0.0",
 )
 def old_api() -> str:
-    """Original documentation"""
+    """Original documentation."""
     return "legacy data"
 
 

@@ -18,7 +18,7 @@ IGNORED_DIRS = ["dist", ".git", "docs", "ignored", ".venv", "venv", "resources"]
 RUFF = "ruff"
 SPACETABS = "./space-tabs.sh"
 
-print(f'api code-formatter: {RUFF}; Extensions: {" ".join(py_extensions)}')
+print(f"api code-formatter: {RUFF}; Extensions: {' '.join(py_extensions)}")
 
 
 def print_usage():
@@ -98,7 +98,7 @@ def main():
         print(f"{GREEN}Formatting completed successfully: {sys.argv[1]}{NC}")
         return
 
-    for root, dirs, files in os.walk(os.getcwd()):
+    for root, _dirs, files in os.walk(os.getcwd()):
         if len(set(root.split("/")).intersection(IGNORED_DIRS)) > 0:
             continue
         for file in files:

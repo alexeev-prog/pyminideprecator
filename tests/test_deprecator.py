@@ -153,10 +153,9 @@ def test_scoped_version():
     with pytest.raises(DeprecatedError):
         removed_func()
 
-    with warnings.catch_warnings(record=True) as caught:
-        with scoped_version("1.9.9"):
-            removed_func()
-            assert len(caught) == 1
+    with warnings.catch_warnings(record=True) as caught, scoped_version("1.9.9"):
+        removed_func()
+        assert len(caught) == 1
 
 
 def test_custom_error_version():
@@ -193,7 +192,7 @@ def test_docstring_modification():
 
     @deprecate("2.0.0", "Doc test")
     def documented_func():
-        """Original docs"""
+        """Original docs."""
 
     docs = str(documented_func.__doc__)
     assert "DEPRECATED" in docs
@@ -261,7 +260,7 @@ def test_class_docstring():
 
     @deprecate("2.0.0", "Class doc test")
     class DocumentedClass:
-        """Original class docs"""
+        """Original class docs."""
 
     docs = str(DocumentedClass.__doc__)
     assert "DEPRECATED CLASS" in docs
@@ -300,7 +299,7 @@ def test_class_without_methods():
 
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
-        obj = EmptyClass()
+        EmptyClass()
         assert len(caught) == 1
 
 
@@ -380,4 +379,4 @@ def test__decorate_class():
             return self.a * 2
 
     with pytest.raises(DeprecatedError):
-        example = Example()
+        Example()

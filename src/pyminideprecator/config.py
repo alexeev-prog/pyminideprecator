@@ -44,8 +44,6 @@ def set_current_version(
             _thread_local.version = Version(version)
         elif isinstance(version, Version):
             _thread_local.version = version
-        else:
-            raise TypeError(f"Invalid version type: {type(version)}")
 
     if version is None:
         _CURRENT_VERSION.set(None)
