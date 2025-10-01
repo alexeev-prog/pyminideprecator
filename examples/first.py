@@ -16,7 +16,8 @@ def old_api() -> str:
 
 print(
     old_api()
-)  # Warning: Deprecated since 1.0.0. Legacy API function. Use new_api() instead. Will be removed in 2.0.0.
+    # Warning: Deprecated since 1.0.0. Legacy API function. Use new_api() instead. Will be removed in 2.0.0.
+)
 
 set_current_version("2.0.0")
 try:
